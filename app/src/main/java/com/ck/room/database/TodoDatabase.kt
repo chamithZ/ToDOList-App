@@ -1,5 +1,7 @@
 package com.ck.room.database
 
+
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -8,27 +10,28 @@ import com.ck.room.database.daos.TodoDao
 import com.ck.room.database.entities.ToDo
 
 
-@Database(entities=[ToDo :: class], version=1)
+@Database(entities = [ToDo::class], version = 1)
+abstract class TodoDatabase : RoomDatabase() {
 
-abstract class TodoDatabase: RoomDatabase(){
     abstract fun getTodoDao(): TodoDao
 
     companion object {
+
         @Volatile
         private var INSTANCE: TodoDatabase? = null
 
-
-        fun getInstance(context: Context): TodoDatabase {
-            synchronized(this) {
-                return INSTANCE?: Room.databaseBuilder(
+        fun getInstance(context: Context):TodoDatabase{
+            synchronized(this){
+                return INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
                     TodoDatabase::class.java,
-                "todo_db"
-                ).build().also{
-                    INSTANCE =it
+                    "todo_db"
+                ).build().also {
+                    INSTANCE = it
                 }
             }
         }
+
     }
 
 }
